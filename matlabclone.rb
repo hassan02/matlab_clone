@@ -1,6 +1,6 @@
 # MatLab Clone
+require 'matrix'
 class MatLabclone
-  require 'matlab'
   def create_arr(array)
     if !array.is_a? String
       puts 'Invalid string entered. Please enter a valid string. e.g 2 3 4'
@@ -67,12 +67,27 @@ class MatLabclone
   end
 
   def inverse(matrix)
-c=Matrix(matrix)
-d=c.inverse
+    
+  mat = Matrix[[1,0,2,3],[2,1,0,3],[3,2,1,0],[4,3,2,1]]
+  puts mat.inverse
+  end
+  def concat(mata,matb)
+  end
+  def save(input)
+  aFile = File.new(input, "w")
+   content = aFile.syswrite()
+   puts "Saved"
+  end
+  def load(input)
+  aFile = File.new(input, "r")
+  if aFile
+  content = aFile.readlines
+   puts content
+  else
+    puts "File not found"
+  end
   end
 
-  def saveload
-  end
 end
 
 test = MatLabclone.new
@@ -123,6 +138,15 @@ while run
     test.inverse(matrix)
   when '7'
     test.create([[1,2,4,5,7],[2,1,5,3,8],[4,9,1,2,9],[4,2,4,5,4],[1,0,9,3,5]])
+  when '8'
+    puts 'Use this command to save: save filename.mat'
+    input = gets.chomp
+    test.save(input)
+  when '9'
+    puts 'Use this command to load file: load filename.mat'
+        input = gets.chomp
+        test.load(input)
+
   when '10'
     run = false
   else
