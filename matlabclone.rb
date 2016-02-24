@@ -6,7 +6,7 @@ class MatLabclone
     else
       new_array = ''
       array.split(' ').each do |x|
-        new_array << x + ' '
+        new_array << "\t#{x}"
       end
       new_array.strip
       print "a = #{new_array}\nArray created \n"
@@ -19,7 +19,7 @@ class MatLabclone
     else
       puts 'a = '
       matrix.split(';').each do |x|
-        puts "    #{x}"
+        puts "#{x}"
       end
     end
   end
@@ -31,7 +31,7 @@ class MatLabclone
       puts 'z = '
       zeromat = ''
       y.to_i.times do
-        zeromat << '0' + ' '
+        zeromat << "\t0"
       end
       x.to_i.times do
         puts "     #{zeromat.strip}"
@@ -47,21 +47,22 @@ class MatLabclone
         newmat << (y.to_i + number).to_s + ' '
         newmat.strip
       end
-      puts "      #{newmat}"
+      puts "      #\t{newmat}"
     end
   end
 
   def transpose(matrix)
     puts "transpose(a) = \n"
-        matrix.split(';').each do |x|
-        newmat = ''
-        x.split(' ').each do |y|
-        newmat << "#{y}\n"
-      end
-      print transpose
+    for x in 0..matrix.split(';').length-1
+    newmat = ''
+    for i in 0..matrix.split(";").length-1
+    newmat << matrix.split(";")[i].split(" ")[x] + " "
+    i += 1
+    end    
+    puts "                #{newmat}"
+    x += 1
     end
   end
-
   def saveload
   end
 end
