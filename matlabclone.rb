@@ -1,5 +1,6 @@
 # MatLab Clone
 class MatLabclone
+  require 'matlab'
   def create_arr(array)
     if !array.is_a? String
       puts 'Invalid string entered. Please enter a valid string. e.g 2 3 4'
@@ -19,7 +20,7 @@ class MatLabclone
     else
       puts 'a = '
       matrix.split(';').each do |x|
-        puts "#{x}"
+        puts x.to_s
       end
     end
   end
@@ -42,8 +43,8 @@ class MatLabclone
   def add(matrix, number)
     puts "a = \n"
     matrix.split(';').each do |x|
-        newmat = ''
-        x.split(' ').each do |y|
+      newmat = ''
+      x.split(' ').each do |y|
         newmat << (y.to_i + number).to_s + ' '
         newmat.strip
       end
@@ -53,16 +54,23 @@ class MatLabclone
 
   def transpose(matrix)
     puts "transpose(a) = \n"
-    for x in 0..matrix.split(';').length-1
-    newmat = ''
-    for i in 0..matrix.split(";").length-1
-    newmat << matrix.split(";")[i].split(" ")[x] + " "
-    i += 1
-    end    
-    puts "                #{newmat}"
-    x += 1
+    lastindex = matrix.split(';').length - 1
+    for x in 0..lastindex
+      newmat = ''
+      for i in 0..lastindex
+        newmat << matrix.split(';')[i].split(' ')[x] + ' '
+        i += 1
+      end
+      puts "                #{newmat}"
+      x += 1
     end
   end
+
+  def inverse(matrix)
+c=Matrix(matrix)
+d=c.inverse
+  end
+
   def saveload
   end
 end
@@ -106,9 +114,15 @@ while run
     number = gets.chomp.to_i
     test.add(matrix, number)
   when '5'
-    puts "Enter the matrix to be transposed.Must be in the format a b c;d e f;g h i"
+    puts 'Enter the matrix to be transposed.'
     matrix = gets.chomp
     test.transpose(matrix)
+  when '6'
+    puts 'Enter the matrix to be inversed.'
+    matrix = gets.chomp
+    test.inverse(matrix)
+  when '7'
+    test.create([[1,2,4,5,7],[2,1,5,3,8],[4,9,1,2,9],[4,2,4,5,4],[1,0,9,3,5]])
   when '10'
     run = false
   else
