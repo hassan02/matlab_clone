@@ -1,30 +1,31 @@
 module Hassan
   require 'colorize'
+  require 'matrix'
   # MatLab Clone
   class MatLabclone
     def create_arr(array)
-      if !array.is_a? String
+      if check_array(array) == false
         puts 'Invalid string entered. Please enter a valid string. e.g 2 3 4'
       else
         new_array = ''
         array.split(' ').each do |x|
           new_array << "#{x}\t"
         end
-        @newarray = new_array.strip
-        print "a = #{@newarray}\nArray created\n".yellow
+        @newarray = new_array.strip.yellow
+        print "a = #{@newarray}\nArray created\n"
       end
     end
 
     def create_mat(matrix)
       @newmatrix = ''
-      if !matrix.is_a? String
-        puts 'Invalid string entered. Please enter a valid string'
-      else
+      if check_mat_correct(matrix) == true && check_mat_length(matrix) == true  
         puts 'a = '
         matrix.split(';').each do |x|
           @newmatrix << "#{x}\n"
         end
         puts @newmatrix
+        else
+        puts 'Invalid string entered. Please enter a valid string'
       end
     end
 
@@ -84,7 +85,7 @@ module Hassan
 
     def save(input)
       afile = File.new(input, 'w')
-      unless @newmatrix.empty?
+      unless @newarr == ''
         content = afile.syswrite(@newmatrix)
         puts 'Saved'
       end
@@ -105,5 +106,44 @@ module Hassan
 
     def inv3_3(mat)
     end
-  end
+    def check_array(array)
+      if /^\d+(\s\d+)*$/.match(array)
+       stat = true
+      else
+       stat = false
+      end
+    end
+    def check_mat_correct(matrix)
+      stat = true
+      matrix.split(";").each do |x|
+      if /^\d+(\s\d+)*$/.match(x)
+       stat = true
+       else
+       stat = false
+       break
+       end
+       return stat
+    end
+    end
+     def check_mat_length(matrix)
+      stat = true
+      newx = matrix.split(";")[0].split(" ").length
+      matrix.split(";").each do |x|
+      if x.split(" ").length == newx
+        stat = true
+      else
+        stat = false
+      break
+      end
+      end
+     return stat 
+    end
+    def check_digit(num)
+      if /^\d+/.match(num)
+        returns true
+      else
+        return false
+      end
+    end
+end
 end
