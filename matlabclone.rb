@@ -87,11 +87,13 @@ module Hassan
     end
 
     def concat(mata, matb, operator)
-      if check_concat(mata,matb,operator) == true
-        hor_concat(mata,matb,operator)
+      if operator == ','
+        hor_concat(mata, matb, operator)
+      elsif operator == ';'
+        ver_concat(mata, matb, operator)
       else
-      puts "You have enetered an invalid matrix or type of concatenation"
-      end        
+        puts 'You have enetered an invalid matrix or type of concatenation'
+      end
     end
 
     def save(input)
@@ -111,6 +113,5 @@ module Hassan
         puts 'File not found'
       end
     end
-
    end
  end
