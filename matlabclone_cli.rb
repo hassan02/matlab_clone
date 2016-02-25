@@ -1,4 +1,4 @@
-require './matlabclone.rb'
+require './matlabclone'
 include Hassan
 test = MatLabclone.new
 run = true
@@ -19,22 +19,28 @@ while run
 
   when '1'
     puts 'Enter array to be created in the following format x y z'
+    print 'a = '
     array = gets.chomp
     test.create_arr(array)
   when '2'
     puts 'Enter matrix to be created in the following format a b c;e f g;h i j'
+    print 'a = '
     matrix = gets.chomp
     test.create_mat(matrix)
   when '3'
     puts 'Enter the value of x: number of rows'
+    print 'rows = '
     rows = gets.chomp
     puts 'Enter the value of y: number of columns'
+    print 'columns = '
     columns = gets.chomp
     test.zeros(rows, columns)
   when '4'
     puts 'Enter the matrix. Must follow the format a b c;d e f;g h i'
+    print 'a = '
     matrix = gets.chomp
     puts 'Enter the number you want to add to the matrix'
+    print 'number = '
     number = gets.chomp
     test.add(matrix, number)
   when '5'
@@ -46,6 +52,14 @@ while run
     matrix = gets.chomp
     test.inverse(matrix)
   when '7'
+    print "Enter first matrix to be concatenated.\nmatrix a = "
+    mata = gets.chomp
+    print "Enter second matrix to be concatenated. \nmatrix b = "
+    matb = gets.chomp
+    puts 'Please supply the type of concatenation(, or ;). , is for horizontal '
+    print "concatenation and ; is for vertical concatenation.\noperation = "
+    operator = gets.chomp
+    test.concat(mata, matb, operator)
   when '8'
     puts 'Use this command to save: save filename.mat'
     input = gets.chomp
