@@ -5,15 +5,14 @@ module Hassan
   # MatLab Clone
   class MatLabclone < Valid
     def create_arr(array)
+      @new_array = ''
       if check_array(array) == false
-        puts 'Invalid string entered. Please enter a valid string. e.g 2 3 4'
+        puts 'Invalid string entered. Please enter a valid string e.g 2 3 4'.red
       else
-        new_array = ''
         array.split(' ').each do |x|
-          new_array << "#{x}\t"
+          @new_array << "\t#{x}"
         end
-        @newarray = new_array.strip.yellow
-        print "a = #{@newarray}\nArray created\n".yellow
+        print "a = #{@new_array}\nArray created\n".yellow
       end
     end
 
@@ -31,32 +30,29 @@ module Hassan
     end
 
     def zeros(x, y)
-      if check_digit(x) == false || check_digit(y) == false
-        puts 'Invalid number. Number of rows/columns invalid '.red
+      @zeromat = ''
+      if x == '0' || y == '0'
+        puts 'Invalid. Number of rows or columns cannot be zero'.red
+      elsif check_digit(x) == false || check_digit(y) == false
+        puts 'Invalid number. Number of rows/columns invalid '.red      
       else
         puts 'z = '.yellow
-        zeromat = ''
-        y.to_i.times do
-          zeromat << "0\t"
-        end
-        x.to_i.times do
-          puts "     #{zeromat.strip}".yellow
-        end
+        y.to_i.times { @zeromat << "\t0" }
+        x.to_i.times {puts "\t#{@zeromat.strip}".yellow }
       end
     end
 
     def add(matrix, number)
       if check_digit(number) == true
-        puts "a + #{number} = \n"
+        puts "a + #{number} = \n".yellow
         matrix.split(';').each do |x|
           newmat = ''
           x.split(' ').each do |y|
-            newmat << (y.to_i + number.to_i).to_s + ' '
+            newmat << (y.to_i + number.to_i).to_s + "\t"
             newmat.strip
           end
-          puts "      #{newmat}\t".yellow
+          puts "\t#{newmat}".yellow
         end
-
       else
         puts 'Invalid matrix or number. Please try again'.red
       end
@@ -70,17 +66,18 @@ module Hassan
       for i in 0..columns - 1
         newmat = ''
         for j in 0..rows - 1
-          newmat = newmat + ' ' + matrix.split(';')[j].split(' ')[i]
+          newmat = newmat + "\t" + matrix.split(';')[j].split(' ')[i]
         end
-        puts "\t         #{newmat}".yellow
+        puts "\t#{newmat}".yellow
       end
       end
 
     def inverse(mat)
+      puts 'inverse(a) = '.yellow
       if mat.split(';').length > 3
         puts 'System can only compute for a 2 * 2 or 3 * 3 matrix'.red
       elsif mat.split(';').length == 2
-        inv2_2(mat)
+        puts inv2_2(mat).to_s.yellow
       elsif mat.split(';').length == 3
         inv3_3(mat)
       end
@@ -88,11 +85,13 @@ module Hassan
 
     def concat(mata, matb, operator)
       if operator == ','
+        puts "[[#{mata}],[#{matb}]= ".yellow
         hor_concat(mata, matb, operator)
       elsif operator == ';'
+        puts "[[#{mata}];[#{matb}]= ".yellow
         ver_concat(mata, matb, operator)
       else
-        puts 'You have enetered an invalid matrix or type of concatenation'
+        puts 'You have enetered an invalid matrix or type of concatenation'.red
       end
     end
 
