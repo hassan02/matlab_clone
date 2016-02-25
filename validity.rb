@@ -22,8 +22,8 @@ class Valid
     h = mat.split(';')[0].split(' ')[1].to_i
     i = mat.split(';')[0].split(' ')[2].to_i
   end
-  
-  def get determinant(mat)
+
+  def getdet(mat)
   end
   def check_array(array)
     if /^\d+(\s\d+)*$/ =~ array
@@ -60,7 +60,7 @@ class Valid
      end
 
   def check_digit(num)
-    stat = if /^\d+$/ =~ num
+    if /^\d+$/ =~ num
              true
            else
              false
@@ -85,7 +85,6 @@ class Valid
     matb.split(';').each do |y|
       @verconcat << "#{y}\n"
     end
-    puts '[a;b] = '.yellow
     puts @verconcat.to_s.yellow
   end
 
@@ -99,5 +98,11 @@ class Valid
       @horconcat << "#{newmat}\n".yellow
     end
     puts @horconcat
+end
+
+def save_to(input)
+    File.open(input, "a") do |file|
+    file.puts content
+    end
 end
 end
