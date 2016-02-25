@@ -1,6 +1,12 @@
 require './matlabclone'
 include Hassan
 test = MatLabclone.new
+
+puts '...........................................................'
+puts '|  Welcome to MatLab Clone developed by Hassan Oyeboade   |'
+puts '|       Andela Fellow Class XIII Bootcamp Project         |'
+puts '|           Done between 15/02/2016-26/02/2015            |'
+puts '|.........................................................|'
 run = true
 
 while run
@@ -70,8 +76,9 @@ while run
     test.load(input)
 
   when '10'
-    run = false
+    puts 'Thank you for making use of MatLabclone. See you next time'.green
+        run = false
   else
-    puts 'Enter a valid number. Number must be between 1 and 10'
+    puts 'Enter a valid number. Number must be between 1 and 10'.red
   end
 end
