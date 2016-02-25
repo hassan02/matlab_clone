@@ -35,7 +35,7 @@ while run
     puts 'Enter the matrix. Must follow the format a b c;d e f;g h i'
     matrix = gets.chomp
     puts 'Enter the number you want to add to the matrix'
-    number = gets.chomp.to_i
+    number = gets.chomp
     test.add(matrix, number)
   when '5'
     puts 'Enter the matrix to be transposed.'
