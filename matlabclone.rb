@@ -1,9 +1,11 @@
 module Hassan
   require 'colorize'
   require './validity'
-  require 'matrix'
+  require 'Date'
   # MatLab Clone
   class MatLabclone < Valid
+    @@savedcontent = ''
+    @@dotlines = '...........................................................................'
     def create_arr(array)
       @new_array = ''
       if check_array(array) == false
@@ -12,21 +14,22 @@ module Hassan
         array.split(' ').each do |x|
           @new_array << "\t#{x}"
         end
+        @@savedcontent << "Array created. #{Time.new.inspect}\n a = #{@new_array}\n#{@@dotlines}\n".yellow
         print "a = #{@new_array}\nArray created\n".yellow
       end
     end
 
     def create_mat(matrix)
       @newmatrix = ''
-      if check_mat_correct(matrix) == true && check_mat_length(matrix) == true
-        puts 'a = '.yellow
+      #if check_mat_correct(matrix) == true && check_mat_length(matrix) == true
         matrix.split(';').each do |x|
-          @newmatrix << "#{x}\n"
+          @newmatrix << "\t#{x}\n"
         end
-        puts @newmatrix.yellow
-      else
-        puts 'Invalid string entered. Please enter a valid string'
-      end
+        @@savedcontent << "Matrix created.\na = #{@newmatrix}\n#{@@dotlines}\n".yellow
+        puts "a = \n#{@newmatrix}".yellow
+      #else
+        #puts 'Invalid string entered. Please enter a valid string'.red
+      #end
     end
 
     def zeros(x, y)
@@ -96,14 +99,35 @@ module Hassan
     end
 
     def save(input)
-      afile = File.new(input, 'w')
-      unless @newarr == ''
-        content = afile.syswrite(@newmatrix)
-        puts 'Saved'
-      end
+      if /^save (\w+).mat$/ =~ input
+        if File.exist?(input.gsub!("save ",""))
+          File.open(input, "a") do |file|
+          file.puts "Hello world"
+          end
+        else
+          newfile = File.new(input, 'w')
+          newfile.syswrite(@@savedcontent)
+          puts "Saved".yellow
+        end
+      else
+        puts "Please save using this command: save filename.mat".red
+      end 
     end
-
     def load(input)
+      #/^\d+(\s\d+)*$/
+      if /^load (\w+).mat$/ =~ input
+        if File.exist?(input.gsub!("load ",""))
+          newfile = File.new(input, 'r')
+          content = newfile.read
+          puts content.to_s.yellow
+        else
+          puts "File does not exist".red
+        end
+      else
+        puts "Please load using this command: load filename.mat".red
+      end 
+    end       
+=begin
       afile = File.new(input, 'r')
       if afile
         content = afile.readlines
@@ -112,5 +136,6 @@ module Hassan
         puts 'File not found'
       end
     end
+=end
    end
  end
