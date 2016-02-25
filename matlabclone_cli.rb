@@ -4,7 +4,6 @@ test = MatLabclone.new
 run = true
 
 while run
-  puts 'Welcome to MatLab Clone designed by Hassan Oyeboade'
   puts 'Enter 1 to create an array'
   puts 'Enter 2 to create a matrix'
   puts 'Enter 3 to create a x-by-y vector of zero'
