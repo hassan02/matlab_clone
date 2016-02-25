@@ -1,8 +1,9 @@
 module Hassan
   require 'colorize'
+  require './validity'
   require 'matrix'
   # MatLab Clone
-  class MatLabclone
+  class MatLabclone < Valid
     def create_arr(array)
       if check_array(array) == false
         puts 'Invalid string entered. Please enter a valid string. e.g 2 3 4'
@@ -12,67 +13,72 @@ module Hassan
           new_array << "#{x}\t"
         end
         @newarray = new_array.strip.yellow
-        print "a = #{@newarray}\nArray created\n"
+        print "a = #{@newarray}\nArray created\n".yellow
       end
     end
 
     def create_mat(matrix)
       @newmatrix = ''
-      if check_mat_correct(matrix) == true && check_mat_length(matrix) == true  
-        puts 'a = '
+      if check_mat_correct(matrix) == true && check_mat_length(matrix) == true
+        puts 'a = '.yellow
         matrix.split(';').each do |x|
           @newmatrix << "#{x}\n"
         end
-        puts @newmatrix
-        else
+        puts @newmatrix.yellow
+      else
         puts 'Invalid string entered. Please enter a valid string'
       end
     end
 
     def zeros(x, y)
-      if x == '0' || y == '0'
-        puts 'Invalid number. Number of rows columns cannot be 0 '.red
+      if check_digit(x) == false || check_digit(y) == false
+        puts 'Invalid number. Number of rows/columns invalid '.red
       else
-        puts 'z = '
+        puts 'z = '.yellow
         zeromat = ''
         y.to_i.times do
           zeromat << "0\t"
         end
         x.to_i.times do
-          puts "     #{zeromat.strip}"
+          puts "     #{zeromat.strip}".yellow
         end
       end
     end
 
     def add(matrix, number)
-      puts "a = \n"
-      matrix.split(';').each do |x|
-        newmat = ''
-        x.split(' ').each do |y|
-          newmat << (y.to_i + number).to_s + ' '
-          newmat.strip
+      if check_digit(number) == true
+        puts "a + #{number} = \n"
+        matrix.split(';').each do |x|
+          newmat = ''
+          x.split(' ').each do |y|
+            newmat << (y.to_i + number.to_i).to_s + ' '
+            newmat.strip
+          end
+          puts "      #{newmat}\t".yellow
         end
-        puts "      #{newmat}\t"
+
+      else
+        puts 'Invalid matrix or number. Please try again'.red
       end
-    end
+   end
 
     def transpose(matrix)
-      puts "transpose(a) = \n"
-      lastindex = matrix.split(';').length - 1
-      for x in 0..lastindex
+      puts 'transpose(a) = '.yellow
+      rows = matrix.split(';').length
+      columns = matrix.split(';')[0].split(' ').length
+      newmat = ''
+      for i in 0..columns - 1
         newmat = ''
-        for i in 0..lastindex
-          newmat << matrix.split(';')[i].split(' ')[x] + ' '
-          i += 1
+        for j in 0..rows - 1
+          newmat = newmat + ' ' + matrix.split(';')[j].split(' ')[i]
         end
-        puts "                #{newmat}"
-        x += 1
+        puts "\t         #{newmat}".yellow
       end
-    end
+      end
 
     def inverse(mat)
       if mat.split(';').length > 3
-        puts 'System can only compute for a 2 * 2 or 3 * 3 matrix'
+        puts 'System can only compute for a 2 * 2 or 3 * 3 matrix'.red
       elsif mat.split(';').length == 2
         inv2_2(mat)
       elsif mat.split(';').length == 3
@@ -80,7 +86,12 @@ module Hassan
       end
     end
 
-    def concat(mata, matb)
+    def concat(mata, matb, operator)
+      if check_concat(mata,matb,operator) == true
+        hor_concat(mata,matb,operator)
+      else
+      puts "You have enetered an invalid matrix or type of concatenation"
+      end        
     end
 
     def save(input)
@@ -101,49 +112,5 @@ module Hassan
       end
     end
 
-    def inv2_2(mat)
-    end
-
-    def inv3_3(mat)
-    end
-    def check_array(array)
-      if /^\d+(\s\d+)*$/.match(array)
-       stat = true
-      else
-       stat = false
-      end
-    end
-    def check_mat_correct(matrix)
-      stat = true
-      matrix.split(";").each do |x|
-      if /^\d+(\s\d+)*$/.match(x)
-       stat = true
-       else
-       stat = false
-       break
-       end
-       return stat
-    end
-    end
-     def check_mat_length(matrix)
-      stat = true
-      newx = matrix.split(";")[0].split(" ").length
-      matrix.split(";").each do |x|
-      if x.split(" ").length == newx
-        stat = true
-      else
-        stat = false
-      break
-      end
-      end
-     return stat 
-    end
-    def check_digit(num)
-      if /^\d+/.match(num)
-        returns true
-      else
-        return false
-      end
-    end
-end
-end
+   end
+ end
