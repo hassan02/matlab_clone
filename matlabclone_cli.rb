@@ -3,11 +3,14 @@ require 'colorize'
 include Hassan
 test = MatLabclone.new
 
-puts '...........................................................'.blue
-puts '|  Welcome to MatLab Clone developed by Hassan Oyeboade   |'.blue
-puts '|       Andela Fellow Class XIII Bootcamp Project         |'.blue
-puts '|           Done between 15/02/2016-26/02/2015            |'.blue
-puts '|.........................................................|'.blue
+puts '...........................................................'.yellow
+puts '|                                                         |'.yellow
+puts '|  Welcome to MatLab Clone developed by Hassan Oyeboade   |'.yellow
+puts '|       Andela Fellow Class XIII Bootcamp Project         |'.yellow
+puts '|           Done between 15/02/2016-26/02/2015            |'.yellow
+puts '|                                                         |'.yellow
+puts '|.........................................................|'.yellow
+
 run = true
 
 while run
@@ -68,7 +71,8 @@ while run
     operator = gets.chomp
     test.concat(mata, matb, operator)
   when '8'
-    puts 'Use this command to save: save filename.mat'
+    puts 'Use this command to save: save > filename.mat'
+    puts 'If file exist initially, new content will be appended to file'
     input = gets.chomp
     test.save(input)
   when '9'
