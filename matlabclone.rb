@@ -4,48 +4,52 @@ module Hassan
   require 'Date'
   # MatLab Clone
   class MatLabclone < Valid
-    @@savedcontent = ''
-    @@dotlines = '...........................................................................'
+    @@saved = ''
+    @@dot = '...........................................................................'
     def create_arr(array)
       @new_array = ''
       if check_array(array) == false
-        puts 'Invalid string entered. Please enter a valid string e.g 2 3 4'.red
+        raise 'Invalid string entered. Please enter a valid string e.g 2 3 4'.red
       else
         array.split(' ').each do |x|
           @new_array << "\t#{x}"
         end
-        @@savedcontent << "Array created. #{Time.new.inspect}\n a = #{@new_array}\n#{@@dotlines}\n".yellow
+        @@saved << "Array created. #{Time.new.inspect}\n a = #{@new_array}\n#{@@dot}\n".yellow
         print "a = #{@new_array}\nArray created\n".yellow
       end
     end
 
     def create_mat(matrix)
       @newmatrix = ''
-      #if check_mat_correct(matrix) == true && check_mat_length(matrix) == true
-        matrix.split(';').each do |x|
-          @newmatrix << "\t#{x}\n"
-        end
-        @@savedcontent << "Matrix created.\na = #{@newmatrix}\n#{@@dotlines}\n".yellow
-        puts "a = \n#{@newmatrix}".yellow
-      #else
-        #puts 'Invalid string entered. Please enter a valid string'.red
-      #end
+      # if check_mat_correct(matrix) == true && check_mat_length(matrix) == true
+      matrix.split(';').each do |x|
+        @newmatrix << "\t#{x}\n"
+      end
+      @@saved << "Matrix created. #{Time.new.inspect} \na = #{@newmatrix}\n#{@@dot}\n".yellow
+      puts "a = \n#{@newmatrix}".yellow
+      # else
+      # puts 'Invalid string entered. Please enter a valid string'.red
+      # end
     end
 
     def zeros(x, y)
       @zeromat = ''
+      @finalmat = ''
       if x == '0' || y == '0'
         puts 'Invalid. Number of rows or columns cannot be zero'.red
       elsif check_digit(x) == false || check_digit(y) == false
-        puts 'Invalid number. Number of rows/columns invalid '.red      
+        puts 'Invalid number. Number of rows/columns invalid '.red
       else
-        puts 'z = '.yellow
         y.to_i.times { @zeromat << "\t0" }
-        x.to_i.times {puts "\t#{@zeromat.strip}".yellow }
+        x.to_i.times { @finalmat << "#{@zeromat}\n" }
+        puts "z = \n#{@finalmat}".yellow
+        @@saved << "Zero vector matrix created. #{Time.new.inspect}\n z = #{@finalmat}\n#{@@dot}\n".yellow
+
       end
     end
 
     def add(matrix, number)
+      @nummat = ''
       if check_digit(number) == true
         puts "a + #{number} = \n".yellow
         matrix.split(';').each do |x|
@@ -55,13 +59,15 @@ module Hassan
             newmat.strip
           end
           puts "\t#{newmat}".yellow
+          @nummat << "#{newmat}\n"
         end
+        @@saved << "Matrix added to number. #{Time.new.inspect}\n a + #{number} =\n       #{@nummat}\n#{@@dot}\n".yellow
       else
         puts 'Invalid matrix or number. Please try again'.red
       end
    end
 
-    def transpose(matrix)
+   def transpose(matrix)
       puts 'transpose(a) = '.yellow
       rows = matrix.split(';').length
       columns = matrix.split(';')[0].split(' ').length
@@ -73,8 +79,7 @@ module Hassan
         end
         puts "\t#{newmat}".yellow
       end
-      end
-
+    end
     def inverse(mat)
       puts 'inverse(a) = '.yellow
       if mat.split(';').length > 3
@@ -100,42 +105,41 @@ module Hassan
 
     def save(input)
       if /^save (\w+).mat$/ =~ input
-        if File.exist?(input.gsub!("save ",""))
-          File.open(input, "a") do |file|
-          file.puts "Hello world"
+        if File.exist?(input.gsub!('save ', ''))
+          File.open(input, 'a') do |file|
+            file.puts @@saved
           end
         else
           newfile = File.new(input, 'w')
-          newfile.syswrite(@@savedcontent)
-          puts "Saved".yellow
+          newfile.syswrite(@@saved)
+          puts 'Saved'.yellow
         end
       else
-        puts "Please save using this command: save filename.mat".red
-      end 
+        puts 'Please save using this command: save filename.mat'.red
+      end
     end
+
     def load(input)
-      #/^\d+(\s\d+)*$/
+      # /^\d+(\s\d+)*$/
       if /^load (\w+).mat$/ =~ input
-        if File.exist?(input.gsub!("load ",""))
+        if File.exist?(input.gsub!('load ', ''))
           newfile = File.new(input, 'r')
           content = newfile.read
           puts content.to_s.yellow
         else
-          puts "File does not exist".red
+          puts 'File does not exist'.red
         end
       else
-        puts "Please load using this command: load filename.mat".red
-      end 
-    end       
-=begin
-      afile = File.new(input, 'r')
-      if afile
-        content = afile.readlines
-        puts content
-      else
-        puts 'File not found'
+        puts 'Please load using this command: load filename.mat'.red
       end
     end
-=end
+     #       afile = File.new(input, 'r')
+     #       if afile
+     #         content = afile.readlines
+     #         puts content
+     #       else
+     #         puts 'File not found'
+     #       end
+     #     end
    end
  end
