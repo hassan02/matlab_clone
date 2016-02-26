@@ -1,12 +1,13 @@
 require './matlabclone'
+require 'colorize'
 include Hassan
 test = MatLabclone.new
 
-puts '...........................................................'
-puts '|  Welcome to MatLab Clone developed by Hassan Oyeboade   |'
-puts '|       Andela Fellow Class XIII Bootcamp Project         |'
-puts '|           Done between 15/02/2016-26/02/2015            |'
-puts '|.........................................................|'
+puts '...........................................................'.blue
+puts '|  Welcome to MatLab Clone developed by Hassan Oyeboade   |'.blue
+puts '|       Andela Fellow Class XIII Bootcamp Project         |'.blue
+puts '|           Done between 15/02/2016-26/02/2015            |'.blue
+puts '|.........................................................|'.blue
 run = true
 
 while run
@@ -77,7 +78,7 @@ while run
 
   when '10'
     puts 'Thank you for making use of MatLabclone. See you next time'.green
-        run = false
+    run = false
   else
     puts 'Enter a valid number. Number must be between 1 and 10'.red
   end
