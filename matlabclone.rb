@@ -4,12 +4,11 @@ module Hassan
   require 'Date'
   # MatLab Clone
   class MatLabclone < Valid
-
     @@saved = ''
     @@dot = '...........................................................................'
     def initialize
-
     end
+
     def create_arr(array)
       @new_array = ''
       if check_array(array) == false
@@ -25,15 +24,11 @@ module Hassan
 
     def create_mat(matrix)
       @newmatrix = ''
-      # if check_mat_correct(matrix) == true && check_mat_length(matrix) == true
       matrix.split(';').each do |x|
         @newmatrix << "\t#{x}\n"
       end
       @@saved << "Matrix created. #{Time.new.inspect} \na = #{@newmatrix}\n#{@@dot}\n".yellow
       puts "a = \n#{@newmatrix}".yellow
-      # else
-      # puts 'Invalid string entered. Please enter a valid string'.red
-      # end
     end
 
     def zeros(x, y)
@@ -71,7 +66,7 @@ module Hassan
       end
    end
 
-   def transpose(matrix)
+    def transpose(matrix)
       @trans = ''
       puts 'transpose(a) = '.yellow
       rows = matrix.split(';').length
@@ -85,33 +80,52 @@ module Hassan
         @trans << "#{newmat}\n"
         puts "\t#{newmat}".yellow
       end
-        @@saved << "Matrix transposed. #{Time.new.inspect}\n a = #{@trans}\n#{@@dot}\n".yellow
-    end
+      @@saved << "Matrix transposed. #{Time.new.inspect}\n a = #{@trans}\n#{@@dot}\n".yellow
+     end
+
     def inverse(mat)
-      puts 'inverse(a) = '.yellow
-      if mat.split(';').length > 3
-        puts 'System can only compute for a 2 * 2 or 3 * 3 matrix'.red
-      elsif mat.split(';').length == 2
-        puts inv2_2(mat).to_s.yellow
-      elsif mat.split(';').length == 3
-        inv3_3(mat)
+      @inverse = ''
+      if mat.split(';').length == 2
+        puts 'inverse(a) = '.yellow
+        a = mat.split(';')[0].split(' ')[0].to_i
+        b = mat.split(';')[0].split(' ')[1].to_i
+        c = mat.split(';')[1].split(' ')[0].to_i
+        d = mat.split(';')[1].split(' ')[1].to_i
+        det = (a * d) - (b * c)
+        @inverse << "#{a / det.to_f}\t#{-1 * c / det.to_f}\n#{-1 * b / det.to_f}\t#{d / det.to_f}".yellow
+        puts @inverse
+        @@saved << "Matrix inversed. #{Time.new.inspect}\n 'inverse(a) = #{@inverse}\n#{@@dot}\n".yellow
+      else mat.split(';').length > 2
+           raise 'System can only compute for a 2 * 2 matrix'.red
       end
     end
 
     def concat(mata, matb, operator)
       @result = ''
       if operator == ','
-        puts "[[#{mata}],[#{matb}]= ".yellow
-        @result << "#{hor_concat(mata, matb, operator)}"
-        puts @result
+        @verconcat = ''
+        mata.split(';').each do |x|
+          @verconcat << "#{x}\n"
+        end
+        matb.split(';').each do |y|
+          @verconcat << "#{y}\n"
+        end
+        puts "[[#{mata}],[#{matb}]= \n#{@verconcat}".yellow
+        @@saved << "Matrix inversed. #{Time.new.inspect}\n [[#{mata}],[#{matb}]= \n#{@verconcat}\n#{@@dot}\n".yellow
       elsif operator == ';'
-        puts "[[#{mata}];[#{matb}]= ".yellow       
-        @result << "#{ver_concat(mata, matb, operator)}"
-        puts @result
+        @horconcat = ''
+        rowa = mata.split(';').length
+        rowb = matb.split(';').length
+        for i in 0..rowa - 1
+          newmat = ''
+          newmat << mata.split(';')[i] << ' ' << matb.split(';')[i]
+          @horconcat << "#{newmat}\n".yellow
+        end
+        puts "[[#{mata}];[#{matb}]= \n#{@horconcat}".yellow
+        @@saved << "Matrix inversed. #{Time.new.inspect}\n [[#{mata}];[#{matb}]= \n #{@horconcat}\n#{@@dot}\n".yellow
       else
         puts 'You have enetered an invalid matrix or type of concatenation'.red
       end
-        @@saved << "Matrix concatenated. #{Time.new.inspect}\n a = #{@result}\n#{@@dot}\n".yellow
     end
 
     def save(input)
