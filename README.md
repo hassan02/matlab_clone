@@ -15,7 +15,7 @@ a = [1 3 5;2 4 6;3 5 7] - should create a matrix as below
     3 5 7
     
 Zero vector matrix creation
-z = zeros(5, 2) - should create a 5-by-1 vector of zeros as shown
+z = zeros(5, 2) - should create a 5-by-2 vector of zeros as shown
     0 0 0 0 0
     0 0 0 0 0
 
