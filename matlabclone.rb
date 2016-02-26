@@ -4,8 +4,12 @@ module Hassan
   require 'Date'
   # MatLab Clone
   class MatLabclone < Valid
+
     @@saved = ''
     @@dot = '...........................................................................'
+    def initialize
+
+    end
     def create_arr(array)
       @new_array = ''
       if check_array(array) == false
@@ -36,9 +40,9 @@ module Hassan
       @zeromat = ''
       @finalmat = ''
       if x == '0' || y == '0'
-        puts 'Invalid. Number of rows or columns cannot be zero'.red
+        raise 'Invalid. Number of rows or columns cannot be zero'.red
       elsif check_digit(x) == false || check_digit(y) == false
-        puts 'Invalid number. Number of rows/columns invalid '.red
+        raise 'Invalid number. Number of rows/columns invalid '.red
       else
         y.to_i.times { @zeromat << "\t0" }
         x.to_i.times { @finalmat << "#{@zeromat}\n" }
@@ -63,11 +67,12 @@ module Hassan
         end
         @@saved << "Matrix added to number. #{Time.new.inspect}\n a + #{number} =\n       #{@nummat}\n#{@@dot}\n".yellow
       else
-        puts 'Invalid matrix or number. Please try again'.red
+        raise 'Invalid matrix or number. Please try again'.red
       end
    end
 
    def transpose(matrix)
+      @trans = ''
       puts 'transpose(a) = '.yellow
       rows = matrix.split(';').length
       columns = matrix.split(';')[0].split(' ').length
@@ -77,8 +82,10 @@ module Hassan
         for j in 0..rows - 1
           newmat = newmat + "\t" + matrix.split(';')[j].split(' ')[i]
         end
+        @trans << "#{newmat}\n"
         puts "\t#{newmat}".yellow
       end
+        @@saved << "Matrix transposed. #{Time.new.inspect}\n a = #{@trans}\n#{@@dot}\n".yellow
     end
     def inverse(mat)
       puts 'inverse(a) = '.yellow
@@ -92,22 +99,27 @@ module Hassan
     end
 
     def concat(mata, matb, operator)
+      @result = ''
       if operator == ','
         puts "[[#{mata}],[#{matb}]= ".yellow
-        hor_concat(mata, matb, operator)
+        @result << "#{hor_concat(mata, matb, operator)}"
+        puts @result
       elsif operator == ';'
-        puts "[[#{mata}];[#{matb}]= ".yellow
-        ver_concat(mata, matb, operator)
+        puts "[[#{mata}];[#{matb}]= ".yellow       
+        @result << "#{ver_concat(mata, matb, operator)}"
+        puts @result
       else
         puts 'You have enetered an invalid matrix or type of concatenation'.red
       end
+        @@saved << "Matrix concatenated. #{Time.new.inspect}\n a = #{@result}\n#{@@dot}\n".yellow
     end
 
     def save(input)
-      if /^save (\w+).mat$/ =~ input
-        if File.exist?(input.gsub!('save ', ''))
+      if /^save > (\w+).mat$/ =~ input
+        if File.exist?(input.gsub!('save > ', ''))
           File.open(input, 'a') do |file|
             file.puts @@saved
+            puts 'Saved'.yellow
           end
         else
           newfile = File.new(input, 'w')
@@ -115,31 +127,22 @@ module Hassan
           puts 'Saved'.yellow
         end
       else
-        puts 'Please save using this command: save filename.mat'.red
+        puts 'Please save using this command: save > filename.mat'.red
       end
     end
 
     def load(input)
-      # /^\d+(\s\d+)*$/
       if /^load (\w+).mat$/ =~ input
         if File.exist?(input.gsub!('load ', ''))
           newfile = File.new(input, 'r')
           content = newfile.read
           puts content.to_s.yellow
         else
-          puts 'File does not exist'.red
+          raise 'File does not exist'.red
         end
       else
-        puts 'Please load using this command: load filename.mat'.red
+        raise 'Please load using this command: load filename.mat'.red
       end
     end
-     #       afile = File.new(input, 'r')
-     #       if afile
-     #         content = afile.readlines
-     #         puts content
-     #       else
-     #         puts 'File not found'
-     #       end
-     #     end
-   end
+  end
  end
